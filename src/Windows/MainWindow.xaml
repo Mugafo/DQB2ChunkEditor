@@ -24,8 +24,9 @@
         <TextBlock>Chunk</TextBlock>
         <TextBlock>Layer</TextBlock>
         <ComboBox Name="TileSelection" Height="34" SelectionChanged="TileUpdateEvent" ItemsSource="{Binding Tiles, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}"/>
-        <TextBlock Text="{Binding StringFormat=ID: {0}, Path=SelectedTile.Value.Tile.Value.Name, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}"/>
-        <TextBlock Text="{Binding StringFormat=Name: {0}, Path=SelectedTile.Value.Tile.Value.Description, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}"/>
+        <TextBlock Text="{Binding StringFormat=ID: {0}, Path=SelectedTile.Value.Tile.Value.Id, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}"/>
+        <TextBlock Text="{Binding StringFormat=Name: {0}, Path=SelectedTile.Value.Tile.Value.Name, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}"/>
+        <TextBlock Text="{Binding StringFormat=Description: {0}, Path=SelectedTile.Value.Tile.Value.Description, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}"/>
       </StackPanel>
     </Grid>
     <Grid Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
