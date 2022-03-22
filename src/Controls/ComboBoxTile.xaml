@@ -5,12 +5,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DQB2ChunkEditor.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="28" d:DesignWidth="280" SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="NearestNeighbor">
+             d:DesignHeight="28"
+             d:DesignWidth="280"
+             SnapsToDevicePixels="True"
+             RenderOptions.BitmapScalingMode="NearestNeighbor">
 
   <Grid>
     <StackPanel Orientation="Horizontal">
-      <Image Source="{Binding Path=Tile.Image, Mode=OneWay, RelativeSource={RelativeSource AncestorType=UserControl}}" Height="28" Width="28" />
-      <TextBlock VerticalAlignment="Center" Text="{Binding Path=Tile.Name, Mode=OneWay, RelativeSource={RelativeSource AncestorType=UserControl}}" Margin="10,0,0,0" />
+      <Image Height="28"
+             Width="28"
+             Source="{Binding Path=Tile.Image, Mode=OneWay, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+      <TextBlock VerticalAlignment="Center"
+                 Margin="10,0,0,0"
+                 Text="{Binding Path=Tile.Name, Mode=OneWay, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
     </StackPanel>
   </Grid>
 </UserControl>

@@ -1,10 +1,14 @@
 {
   "Tiles": [
     {
-      "Type": "Block",
       "Id": 0,
       "Name": "Empty",
       "Description": "Set on layer 0 will create sea floor"
+    },
+    {
+      "Id": 1,
+      "Name": "Bedrock",
+      "Description": "Indestructible"
     }
   ]
 }

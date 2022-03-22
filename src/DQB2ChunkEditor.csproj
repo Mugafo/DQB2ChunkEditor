@@ -8,7 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Data\Open.png" />
+    <None Remove="Data\Save.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Iconic.Zlib.Netstandard" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\Open.png" />
+    <Resource Include="Images\Save.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Data\Blocks.json">
+    <None Update="Data\Tiles.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

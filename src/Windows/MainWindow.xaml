@@ -3,8 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DQB2ChunkEditor.Windows" 
-        xmlns:controls="clr-namespace:DQB2ChunkEditor.Controls"
         mc:Ignorable="d"
         Title="DQB2 Chunk Editor" Height="600" MinHeight="600" Width="900" MinWidth="900" WindowStartupLocation="CenterScreen" WindowState="Normal" SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="NearestNeighbor">
   <Window.Resources>
@@ -12,27 +10,40 @@
       <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
     </Style>
   </Window.Resources>
-  <Grid HorizontalAlignment="Center">
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="300" />
-      <ColumnDefinition Width="auto" MinWidth="600" />
-    </Grid.ColumnDefinitions>
-    <Grid Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10,0,10,0">
-      <StackPanel Width="280" HorizontalAlignment="Left">
-        <TextBlock>Open</TextBlock>
-        <TextBlock>Save</TextBlock>
-        <TextBlock>Chunk</TextBlock>
-        <TextBlock>Layer</TextBlock>
-        <ComboBox Name="TileSelection" Height="34" SelectionChanged="TileUpdateEvent" ItemsSource="{Binding Tiles, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}"/>
-        <TextBlock Text="{Binding StringFormat=ID: {0}, Path=SelectedTile.Value.Tile.Value.Id, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}"/>
-        <TextBlock Text="{Binding StringFormat=Name: {0}, Path=SelectedTile.Value.Tile.Value.Name, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}"/>
-        <TextBlock Text="{Binding StringFormat=Description: {0}, Path=SelectedTile.Value.Tile.Value.Description, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}"/>
-      </StackPanel>
-    </Grid>
-    <Grid Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-      <Viewbox Stretch="Uniform">
-        <UniformGrid Name="LayerTiles" Columns="32" Rows="32"/>
-      </Viewbox>
-    </Grid>
+  <Grid>
+    <DockPanel>
+      <ToolBar DockPanel.Dock="Top" ToolBarTray.IsLocked="True" Margin="-5,0,-13,0" Padding="5,0,0,0">
+        <Button Height="24" Width="24" ToolTip="Open" Click="OpenFileEvent">
+          <Image Source="/Images/Open.png"/>
+        </Button>
+        <Button Height="24" Width="24" ToolTip="Save" Click="SaveFileEvent">
+          <Image Source="/Images/Save.png"/>
+        </Button>
+        <Separator/>
+      </ToolBar>
+      <Grid HorizontalAlignment="Center">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="300" />
+          <ColumnDefinition Width="auto" MinWidth="600" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10,0,10,0" DockPanel.Dock="Left">
+          <StackPanel Width="280" HorizontalAlignment="Left">
+            <TextBlock>Chunk</TextBlock>
+            <TextBlock>Layer</TextBlock>
+            <ComboBox Name="TileSelection" Height="34" SelectionChanged="TileUpdateEvent" ItemsSource="{Binding Tiles, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}">
+            </ComboBox>
+            <TextBlock Text="{Binding StringFormat=ID: {0}, Path=SelectedTile.Value.Tile.Value.Id, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}"/>
+            <TextBlock Text="{Binding StringFormat=Type: {0}, Path=SelectedTile.Value.Tile.Value.Type, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}"/>
+            <TextBlock Text="{Binding StringFormat=Name: {0}, Path=SelectedTile.Value.Tile.Value.Name, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}"/>
+            <TextBlock Text="{Binding StringFormat=Description: {0}, Path=SelectedTile.Value.Tile.Value.Description, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}"/>
+          </StackPanel>
+        </Grid>
+        <Grid Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" DockPanel.Dock="Right">
+          <Viewbox Stretch="Uniform">
+            <UniformGrid Name="LayerTiles" Columns="32" Rows="32"/>
+          </Viewbox>
+        </Grid>
+      </Grid>
+    </DockPanel>
   </Grid>
 </Window>

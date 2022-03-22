@@ -5,10 +5,17 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DQB2ChunkEditor.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="24" d:DesignWidth="24" SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="NearestNeighbor">
-
+             d:DesignHeight="24"
+             d:DesignWidth="24"
+             SnapsToDevicePixels="True"
+             RenderOptions.BitmapScalingMode="NearestNeighbor">
   <Grid>
-    <RadioButton Name="TileButton" GroupName="Grid" Style="{StaticResource {x:Type ToggleButton}}" Height="24" Width="24">
+    <RadioButton Name="TileButton"
+                 GroupName="Grid"
+                 Height="24"
+                 Width="24"
+                 Style="{StaticResource {x:Type ToggleButton}}"
+                 ToolTip="{Binding Path=Tile.Value.Name, Mode=OneWay, RelativeSource={RelativeSource AncestorType=UserControl}}">
       <Image Source="{Binding Path=Tile.Value.Image, Mode=OneWay, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
     </RadioButton>
   </Grid>
