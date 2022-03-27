@@ -9,7 +9,7 @@ public class Tile
     public Type Type { get; set; } = Type.Block;
 
     [JsonPropertyName("Id")]
-    public ushort Id { get; set; } = 0;
+    public short Id { get; set; } = 0;
 
     [JsonPropertyName("Name")]
     public string Name { get; set; } = "Unknown";
@@ -18,5 +18,5 @@ public class Tile
     public string Description { get; set; } = "N/A";
 
     [JsonIgnore]
-    public string Image => $@"Data\Tiles\Blocks\{Id:0000}.png";
+    public string Image => $"/Images/Blocks/{Id:0000}.png";
 }

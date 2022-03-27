@@ -15,8 +15,8 @@
                  Height="24"
                  Width="24"
                  Style="{StaticResource {x:Type ToggleButton}}"
-                 ToolTip="{Binding Path=Tile.Value.Name, Mode=OneWay, RelativeSource={RelativeSource AncestorType=UserControl}}">
-      <Image Source="{Binding Path=Tile.Value.Image, Mode=OneWay, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                 ToolTip="{Binding Path=Tile.Value.Name, RelativeSource={RelativeSource AncestorType=UserControl}}">
+      <Image Source="{Binding Path=Tile.Value.Image, RelativeSource={RelativeSource AncestorType=UserControl}}" />
     </RadioButton>
   </Grid>
 </UserControl>

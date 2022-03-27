@@ -14,10 +14,10 @@
     <StackPanel Orientation="Horizontal">
       <Image Height="28"
              Width="28"
-             Source="{Binding Path=Tile.Image, Mode=OneWay, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+             Source="{Binding Path=Tile.Image, RelativeSource={RelativeSource AncestorType=UserControl}}" />
       <TextBlock VerticalAlignment="Center"
                  Margin="10,0,0,0"
-                 Text="{Binding Path=Tile.Name, Mode=OneWay, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                 Text="{Binding Path=Tile.Name, RelativeSource={RelativeSource AncestorType=UserControl}}" />
     </StackPanel>
   </Grid>
 </UserControl>

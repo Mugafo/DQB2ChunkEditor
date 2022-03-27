@@ -9,15 +9,19 @@
     <Style TargetType="Image">
       <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
     </Style>
+    <Style x:Key="BorderStyle" TargetType="Border">
+      <Setter Property="BorderBrush" Value="Black" />
+      <Setter Property="BorderThickness" Value="0.5" />
+    </Style>
   </Window.Resources>
   <Grid>
     <DockPanel>
       <ToolBar DockPanel.Dock="Top" ToolBarTray.IsLocked="True" Margin="-5,0,-13,0" Padding="5,0,0,0">
-        <Button Height="24" Width="24" ToolTip="Open" Click="OpenFileEvent">
-          <Image Source="/Images/Open.png"/>
+        <Button Name="OpenFile" Height="24" Width="24" ToolTip="Open" Click="OpenFile_OnClick">
+          <Image Source="/Images/Open.png" />
         </Button>
-        <Button Height="24" Width="24" ToolTip="Save" Click="SaveFileEvent">
-          <Image Source="/Images/Save.png"/>
+        <Button Name="SaveFile"  Height="24" Width="24" ToolTip="Save" Click="SaveFile_OnClick">
+          <Image Source="/Images/Save.png" />
         </Button>
         <Separator/>
       </ToolBar>
@@ -28,19 +32,33 @@
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10,0,10,0" DockPanel.Dock="Left">
           <StackPanel Width="280" HorizontalAlignment="Left">
-            <TextBlock>Chunk</TextBlock>
-            <TextBlock>Layer</TextBlock>
-            <ComboBox Name="TileSelection" Height="34" SelectionChanged="TileUpdateEvent" ItemsSource="{Binding Tiles, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}">
-            </ComboBox>
-            <TextBlock Text="{Binding StringFormat=ID: {0}, Path=SelectedTile.Value.Tile.Value.Id, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}"/>
-            <TextBlock Text="{Binding StringFormat=Type: {0}, Path=SelectedTile.Value.Tile.Value.Type, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}"/>
-            <TextBlock Text="{Binding StringFormat=Name: {0}, Path=SelectedTile.Value.Tile.Value.Name, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}"/>
-            <TextBlock Text="{Binding StringFormat=Description: {0}, Path=SelectedTile.Value.Tile.Value.Description, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}"/>
+            <TextBlock Height="10"/>
+            <StackPanel Width="280" VerticalAlignment="Center" Orientation="Horizontal">
+              <TextBlock Text="Chunk" Width="50" TextAlignment="Center" />
+              <Button Name="AddChunk" Width="20" FontWeight="Bold">+</Button>
+              <Border Style="{StaticResource BorderStyle}">
+                <TextBlock Name="ChunkInput" Text="{Binding Path=ChunkValue.Value, RelativeSource={RelativeSource AncestorType=Window}}" Width="30" TextAlignment="Center" MouseUp="ChunkInput_OnMouseUp" />
+              </Border>
+              <Button Name="SubChunk" Width="20">-</Button>
+              <TextBlock Width="10"/>
+              <TextBlock Text="Layer" Width="50" TextAlignment="Center" />
+              <Button Name="AddLayer" Width="20" FontWeight="Bold">+</Button>
+              <Border Style="{StaticResource BorderStyle}">
+                <TextBlock Name="LayerInput" Text="{Binding Path=LayerValue.Value, RelativeSource={RelativeSource AncestorType=Window}}" Width="30" TextAlignment="Center" MouseUp="LayerInput_OnMouseUp" />
+              </Border>
+              <Button Name="SubLayer" Width="20">-</Button>
+            </StackPanel>
+            <TextBlock Height="10"/>
+            <ComboBox Name="TileSelection" Height="34" SelectionChanged="TileSelection_OnSelectionChange" ItemsSource="{Binding Tiles, RelativeSource={RelativeSource AncestorType=Window}}" />
+            <TextBlock Text="{Binding StringFormat=ID: {0}, Path=SelectedTile.Value.Tile.Value.Id, RelativeSource={RelativeSource AncestorType=Window}}" />
+            <TextBlock Text="{Binding StringFormat=Type: {0}, Path=SelectedTile.Value.Tile.Value.Type, RelativeSource={RelativeSource AncestorType=Window}}" />
+            <TextBlock Text="{Binding StringFormat=Name: {0}, Path=SelectedTile.Value.Tile.Value.Name, RelativeSource={RelativeSource AncestorType=Window}}" />
+            <TextBlock Text="{Binding StringFormat=Description: {0}, Path=SelectedTile.Value.Tile.Value.Description, RelativeSource={RelativeSource AncestorType=Window}}" />
           </StackPanel>
         </Grid>
         <Grid Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" DockPanel.Dock="Right">
           <Viewbox Stretch="Uniform">
-            <UniformGrid Name="LayerTiles" Columns="32" Rows="32"/>
+            <UniformGrid Name="LayerTiles" Columns="32" Rows="32" />
           </Viewbox>
         </Grid>
       </Grid>
