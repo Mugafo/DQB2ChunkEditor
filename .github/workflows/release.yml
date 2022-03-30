@@ -24,7 +24,7 @@ jobs:
           
           dotnet publish src/DQB2ChunkEditor.csproj --configuration Release -o "$tag"
           
-          7z a -tzip "${tag}.zip" "./${tag}}/*"
+          7z a -tzip "${tag}.zip" "./${tag}/*"
           
           # Delete output folder
           rm -r "$tag"
