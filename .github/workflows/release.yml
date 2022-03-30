@@ -1,0 +1,37 @@
+name: .NET Core Desktop - Make release on tag
+
+on:
+  push:
+    tags: [ v* ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install .NET Core
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 6.0.x
+        
+      - name: Build
+        shell: bash
+        run: |
+          tag=$(git describe --tags --abbrev=0)
+          
+          dotnet publish src/DQB2ChunkEditor.csproj --configuration Release -o "$tag"
+          
+          7z a -tzip "${tag}.zip" "./${tag}}/*"
+          
+          # Delete output folder
+          rm -r "$tag"
+          
+      - name: Publish
+        uses: softprops/action-gh-release@v1
+        with:
+          files: "${tag}.zip"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
