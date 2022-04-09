@@ -10,6 +10,9 @@
   <ItemGroup>
     <None Remove="Data\Open.png" />
     <None Remove="Data\Save.png" />
+    <None Remove="Images\Brush.png" />
+    <None Remove="Images\Paste.png" />
+    <None Remove="Images\Select.png" />
     <None Remove="Images\Blocks\*.png" />
   </ItemGroup>
 
@@ -19,7 +22,9 @@
 
   <ItemGroup>
     <Resource Include="Images\Open.png" />
+    <Resource Include="Images\Paste.png" />
     <Resource Include="Images\Save.png" />
+    <Resource Include="Images\Select.png" />
     <Resource Include="Images\Blocks\*.png" />
   </ItemGroup>
 

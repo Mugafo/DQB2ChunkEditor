@@ -24,6 +24,13 @@
           <Image Source="/Images/Save.png" />
         </Button>
         <Separator/>
+        <RadioButton Name="SelectButton" Height="24" Width="24" ToolTip="Select" IsChecked="True">
+          <Image Source="/Images/Select.png" />
+        </RadioButton>
+        <RadioButton Name="PasteButton" Height="24" Width="24" ToolTip="Paste">
+          <Image Source="/Images/Paste.png" />
+        </RadioButton>
+        <Separator/>
       </ToolBar>
       <Grid HorizontalAlignment="Center">
         <Grid.ColumnDefinitions>
@@ -35,18 +42,18 @@
             <TextBlock Height="10"/>
             <StackPanel Width="280" VerticalAlignment="Center" Orientation="Horizontal">
               <TextBlock Text="Chunk" Width="50" TextAlignment="Center" />
-              <Button Name="AddChunk" Width="20" FontWeight="Bold">+</Button>
+              <Button Name="AddChunk" Width="20" FontWeight="Bold" Click="AddChunk_OnClick">+</Button>
               <Border Style="{StaticResource BorderStyle}">
                 <TextBlock Name="ChunkInput" Text="{Binding Path=ChunkValue.Value, RelativeSource={RelativeSource AncestorType=Window}}" Width="30" TextAlignment="Center" MouseUp="ChunkInput_OnMouseUp" />
               </Border>
-              <Button Name="SubChunk" Width="20">-</Button>
+              <Button Name="SubChunk" Width="20" FontWeight="Bold" Click="SubChunk_OnClick">-</Button>
               <TextBlock Width="10"/>
               <TextBlock Text="Layer" Width="50" TextAlignment="Center" />
-              <Button Name="AddLayer" Width="20" FontWeight="Bold">+</Button>
+              <Button Name="AddLayer" Width="20" FontWeight="Bold" Click="AddLayer_OnClick">+</Button>
               <Border Style="{StaticResource BorderStyle}">
                 <TextBlock Name="LayerInput" Text="{Binding Path=LayerValue.Value, RelativeSource={RelativeSource AncestorType=Window}}" Width="30" TextAlignment="Center" MouseUp="LayerInput_OnMouseUp" />
               </Border>
-              <Button Name="SubLayer" Width="20">-</Button>
+              <Button Name="SubLayer" Width="20" FontWeight="Bold" Click="SubLayer_OnClick">-</Button>
             </StackPanel>
             <TextBlock Height="10"/>
             <ComboBox Name="TileComboBox" Height="34" SelectedItem="{Binding SelectedTile, RelativeSource={RelativeSource AncestorType=Window}}" SelectionChanged="TileComboBox_OnSelectionChange" ItemsSource="{Binding TileComboBoxList, RelativeSource={RelativeSource AncestorType=Window}}" />

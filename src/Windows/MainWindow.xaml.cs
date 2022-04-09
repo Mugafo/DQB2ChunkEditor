@@ -112,7 +112,7 @@ public partial class MainWindow : Window
             {
                 var blockId = ChunkEditor.GetBlockValue(chunk, layer, i);
 
-                ((LayerTile)LayerTiles.Children[i]).Tile.Value = TileList.FirstOrDefault(t => t.Id % 2048 == blockId)/* ?? TileList[^1]*/;
+                ((LayerTile)LayerTiles.Children[i]).Tile.Value = TileList.FirstOrDefault(t => t.Id % 2048 == blockId) ?? TileList[0];
             }
         }
         catch (Exception ex)
@@ -122,20 +122,31 @@ public partial class MainWindow : Window
     }
 
     /// <summary>
-    /// Event handler for when a layer tile is clicked. Updates the tile selection section.
+    /// Event handler for when a layer tile is clicked.
     /// </summary>
     private void LayerTile_OnClick(LayerTile layerTile)
     {
         try
         {
-            if (layerTile.Tile.Value == null)
+            if (layerTile.Tile.Value == null || string.IsNullOrWhiteSpace(ChunkEditor.Filename))
             {
                 return;
             }
 
-            SelectedTile.Value = layerTile.Tile.Value;
             SelectedLayerTile.Value = layerTile;
-            TileComboBox.SelectedIndex = TileComboBoxList.FirstOrDefault(t => t.Tile.Id == layerTile.Tile.Value.Id)!.Id;
+
+            // if the select button is check, update the dropdown
+            if (SelectButton.IsChecked == true)
+            {
+                SelectedTile.Value = layerTile.Tile.Value;
+                TileComboBox.SelectedIndex = TileComboBoxList.FirstOrDefault(t => t.Tile.Id == layerTile.Tile.Value.Id)!.Id;
+            }
+            // otherwise just update the tile with the current selected value
+            else
+            {
+                ((LayerTile)LayerTiles.Children[SelectedLayerTile.Value!.Id]).Tile.Value = SelectedTile.Value;
+                ChunkEditor.SetBlockValue(ChunkValue.Value, LayerValue.Value, SelectedLayerTile.Value.Id, SelectedTile.Value.Id);
+            }
         }
         catch (Exception ex)
         {
@@ -188,7 +199,13 @@ public partial class MainWindow : Window
 
             ChunkEditor.LoadFile(openFileDialog.FileName);
 
-            RefreshTiles(0, 0);
+            // if we are above the max chunk, reset to the highest chunk
+            if (ChunkValue.Value > ChunkEditor.ChunkCount)
+            {
+                ChunkValue.Value = ChunkEditor.ChunkCount;
+            }
+
+            RefreshTiles(ChunkValue.Value, LayerValue.Value);
         }
         catch (Exception ex)
         {
@@ -232,16 +249,12 @@ public partial class MainWindow : Window
             };
 
             if (inputValueDialog.ShowDialog() == false ||
-                !short.TryParse(inputValueDialog.ResponseText, out var value) ||
-                value < 0 ||
-                value >= ChunkEditor.ChunkCount)
+                !short.TryParse(inputValueDialog.ResponseText, out var value))
             {
                 return;
             }
 
-            ChunkValue.Value = value;
-
-            RefreshTiles(ChunkValue.Value, LayerValue.Value);
+            TrySetChunk(value);
         }
         catch (Exception ex)
         {
@@ -262,19 +275,60 @@ public partial class MainWindow : Window
             };
 
             if (inputValueDialog.ShowDialog() == false ||
-                !byte.TryParse(inputValueDialog.ResponseText, out var value) ||
-                value is < 0 or > 95)
+                !byte.TryParse(inputValueDialog.ResponseText, out var value))
             {
                 return;
             }
 
-            LayerValue.Value = value;
-
-            RefreshTiles(ChunkValue.Value, LayerValue.Value);
+            TrySetLayer(value);
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex);
         }
+    }
+
+    private void AddChunk_OnClick(Object sender, RoutedEventArgs e)
+    {
+        TrySetChunk((short)(ChunkValue.Value + 1));
+    }
+
+    private void SubChunk_OnClick(Object sender, RoutedEventArgs e)
+    {
+        TrySetChunk((short)(ChunkValue.Value - 1));
+    }
+
+    private void AddLayer_OnClick(Object sender, RoutedEventArgs e)
+    {
+        TrySetLayer((byte)(LayerValue.Value + 1));
+    }
+
+    private void SubLayer_OnClick(Object sender, RoutedEventArgs e)
+    {
+        TrySetLayer((byte)(LayerValue.Value - 1));
+    }
+
+    private void TrySetChunk(short value)
+    {
+        if (value < 0 || value >= ChunkEditor.ChunkCount)
+        {
+            return;
+        }
+
+        ChunkValue.Value = value;
+
+        RefreshTiles(ChunkValue.Value, LayerValue.Value);
+    }
+
+    private void TrySetLayer(byte value)
+    {
+        if (value is < 0 or > 95)
+        {
+            return;
+        }
+
+        LayerValue.Value = value;
+
+        RefreshTiles(ChunkValue.Value, LayerValue.Value);
     }
 }
