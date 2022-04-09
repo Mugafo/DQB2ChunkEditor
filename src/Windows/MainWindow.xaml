@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="DQB2 Chunk Editor" Height="600" MinHeight="600" Width="900" MinWidth="900" WindowStartupLocation="CenterScreen" WindowState="Normal" SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="NearestNeighbor">
+        Title="DQB2 Chunk Editor" Height="600" MinHeight="600" Width="900" MinWidth="900" WindowStartupLocation="CenterScreen" WindowState="Normal" SnapsToDevicePixels="True">
   <Window.Resources>
     <Style TargetType="Image">
       <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
@@ -49,11 +49,11 @@
               <Button Name="SubLayer" Width="20">-</Button>
             </StackPanel>
             <TextBlock Height="10"/>
-            <ComboBox Name="TileSelection" Height="34" SelectionChanged="TileSelection_OnSelectionChange" ItemsSource="{Binding Tiles, RelativeSource={RelativeSource AncestorType=Window}}" />
-            <TextBlock Text="{Binding StringFormat=ID: {0}, Path=SelectedTile.Value.Tile.Value.Id, RelativeSource={RelativeSource AncestorType=Window}}" />
-            <TextBlock Text="{Binding StringFormat=Type: {0}, Path=SelectedTile.Value.Tile.Value.Type, RelativeSource={RelativeSource AncestorType=Window}}" />
-            <TextBlock Text="{Binding StringFormat=Name: {0}, Path=SelectedTile.Value.Tile.Value.Name, RelativeSource={RelativeSource AncestorType=Window}}" />
-            <TextBlock Text="{Binding StringFormat=Description: {0}, Path=SelectedTile.Value.Tile.Value.Description, RelativeSource={RelativeSource AncestorType=Window}}" />
+            <ComboBox Name="TileComboBox" Height="34" SelectedItem="{Binding SelectedTile, RelativeSource={RelativeSource AncestorType=Window}}" SelectionChanged="TileComboBox_OnSelectionChange" ItemsSource="{Binding TileComboBoxList, RelativeSource={RelativeSource AncestorType=Window}}" />
+            <TextBlock Text="{Binding StringFormat=ID: {0}, Path=SelectedTile.Value.Id, RelativeSource={RelativeSource AncestorType=Window}}" />
+            <TextBlock Text="{Binding StringFormat=Type: {0}, Path=SelectedTile.Value.Type, RelativeSource={RelativeSource AncestorType=Window}}" />
+            <TextBlock Text="{Binding StringFormat=Name: {0}, Path=SelectedTile.Value.Name, RelativeSource={RelativeSource AncestorType=Window}}" />
+            <TextBlock Text="{Binding StringFormat=Description: {0}, Path=SelectedTile.Value.Description, RelativeSource={RelativeSource AncestorType=Window}}" />
           </StackPanel>
         </Grid>
         <Grid Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" DockPanel.Dock="Right">

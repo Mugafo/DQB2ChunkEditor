@@ -7,17 +7,18 @@
              mc:Ignorable="d" 
              d:DesignHeight="28"
              d:DesignWidth="280"
-             SnapsToDevicePixels="True"
-             RenderOptions.BitmapScalingMode="NearestNeighbor">
-
+             SnapsToDevicePixels="True">
+  <UserControl.Resources>
+    <Style TargetType="Image">
+      <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
+    </Style>
+  </UserControl.Resources>
   <Grid>
-    <StackPanel Orientation="Horizontal">
-      <Image Height="28"
-             Width="28"
-             Source="{Binding Path=Tile.Image, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-      <TextBlock VerticalAlignment="Center"
-                 Margin="10,0,0,0"
-                 Text="{Binding Path=Tile.Name, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-    </StackPanel>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition />
+      <ColumnDefinition />
+    </Grid.ColumnDefinitions>
+    <Image Grid.Column="0" Width="28" Source="{Binding Path=Tile.Image, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+    <Label Grid.Column="1" VerticalAlignment="Center" Content="{Binding Path=Tile.Name, RelativeSource={RelativeSource AncestorType=UserControl}}" />
   </Grid>
 </UserControl>

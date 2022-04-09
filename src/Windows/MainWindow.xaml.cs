@@ -16,9 +16,10 @@ namespace DQB2ChunkEditor.Windows;
 
 public partial class MainWindow : Window
 {
-    public ObservableProperty<LayerTile> SelectedTile { get; set; } = new();
-    public ObservableCollection<ComboBoxTile> Tiles { get; set; } = new();
-    private List<Tile> TileList { get; } = new();
+    public List<Tile> TileList { get; } = new();
+    public ObservableCollection<ComboBoxTile> TileComboBoxList { get; set; } = new();
+    public ObservableProperty<Tile> SelectedTile { get; set; } = new();
+    public ObservableProperty<LayerTile> SelectedLayerTile { get; set; } = new();
     public ObservableProperty<short> ChunkValue { get; set; } = new() { Value = 0};
     public ObservableProperty<byte> LayerValue { get; set; } = new() { Value = 0 };
 
@@ -48,7 +49,7 @@ public partial class MainWindow : Window
                     }
                 };
 
-                layerTile.TileButton.Click += (_, _) => { TileButton_OnClick(layerTile); };
+                layerTile.TileButton.Click += (_, _) => { LayerTile_OnClick(layerTile); };
 
                 LayerTiles.Children.Add(layerTile);
             }
@@ -78,14 +79,15 @@ public partial class MainWindow : Window
 
             var tiles = JsonSerializer.Deserialize<TileList>(json, options);
 
-            foreach (var tile in tiles.Tiles)
+            for (var i = 0; i < tiles!.Tiles.Count; i++)
             {
-                Tiles.Add(new ComboBoxTile
+                TileComboBoxList.Add(new ComboBoxTile
                 {
-                    Tile = tile
+                    Id = i,
+                    Tile = tiles.Tiles[i]
                 });
 
-                TileList.Add(tile);
+                TileList.Add(tiles.Tiles[i]);
             }
         }
         catch (Exception ex)
@@ -94,6 +96,9 @@ public partial class MainWindow : Window
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     private void RefreshTiles(short chunk, byte layer)
     {
         try
@@ -107,7 +112,7 @@ public partial class MainWindow : Window
             {
                 var blockId = ChunkEditor.GetBlockValue(chunk, layer, i);
 
-                ((LayerTile)LayerTiles.Children[i]).Tile.Value = TileList.FirstOrDefault(t => t.Id == blockId) ?? TileList[^1];
+                ((LayerTile)LayerTiles.Children[i]).Tile.Value = TileList.FirstOrDefault(t => t.Id % 2048 == blockId)/* ?? TileList[^1]*/;
             }
         }
         catch (Exception ex)
@@ -119,7 +124,7 @@ public partial class MainWindow : Window
     /// <summary>
     /// Event handler for when a layer tile is clicked. Updates the tile selection section.
     /// </summary>
-    private void TileButton_OnClick(LayerTile layerTile)
+    private void LayerTile_OnClick(LayerTile layerTile)
     {
         try
         {
@@ -128,11 +133,9 @@ public partial class MainWindow : Window
                 return;
             }
 
-            SelectedTile.Value = layerTile;
-
-            //TileSelection.SelectionChanged -= TileUpdateEvent;
-            TileSelection.SelectedIndex = layerTile.Tile.Value.Id;
-            //TileSelection.SelectionChanged += TileUpdateEvent;
+            SelectedTile.Value = layerTile.Tile.Value;
+            SelectedLayerTile.Value = layerTile;
+            TileComboBox.SelectedIndex = TileComboBoxList.FirstOrDefault(t => t.Tile.Id == layerTile.Tile.Value.Id)!.Id;
         }
         catch (Exception ex)
         {
@@ -143,20 +146,22 @@ public partial class MainWindow : Window
     /// <summary>
     /// Event handler for when a new tile is selected from the dropdown. Updates the selected tile.
     /// </summary>
-    private void TileSelection_OnSelectionChange(object sender, SelectionChangedEventArgs e)
+    private void TileComboBox_OnSelectionChange(object sender, SelectionChangedEventArgs e)
     {
         try
         {
-            if (SelectedTile.Value == null)
+            if (SelectedLayerTile.Value == null)
             {
                 return;
             }
 
             var selectedTile = ((ComboBoxTile)e.AddedItems[0]!).Tile;
 
-            ((LayerTile)LayerTiles.Children[SelectedTile.Value.Id]).Tile.Value = selectedTile;
+            SelectedTile.Value = selectedTile;
 
-            ChunkEditor.SetBlockValue(ChunkValue.Value, LayerValue.Value, SelectedTile.Value.Id, selectedTile.Id);
+            ((LayerTile)LayerTiles.Children[SelectedLayerTile.Value.Id]).Tile.Value = selectedTile;
+
+            ChunkEditor.SetBlockValue(ChunkValue.Value, LayerValue.Value, SelectedLayerTile.Value.Id, selectedTile.Id);
         }
         catch (Exception ex)
         {
@@ -188,6 +193,7 @@ public partial class MainWindow : Window
         catch (Exception ex)
         {
             Console.WriteLine(ex);
+            MessageBox.Show(ex.Message, "Failed to open file", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -208,6 +214,7 @@ public partial class MainWindow : Window
         catch (Exception ex)
         {
             Console.WriteLine(ex);
+            MessageBox.Show(ex.Message, "Failed to save file", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -218,9 +225,11 @@ public partial class MainWindow : Window
     {
         try
         {
-            var inputValueDialog = new InputValue();
-
-            inputValueDialog.MaxValue = ChunkEditor.ChunkCount - 1;
+            var inputValueDialog = new InputValue
+            {
+                MaxValue = ChunkEditor.ChunkCount - 1,
+                CurrentValue = ChunkValue.Value
+            };
 
             if (inputValueDialog.ShowDialog() == false ||
                 !short.TryParse(inputValueDialog.ResponseText, out var value) ||
@@ -247,7 +256,10 @@ public partial class MainWindow : Window
     {
         try
         {
-            var inputValueDialog = new InputValue();
+            var inputValueDialog = new InputValue
+            {
+                CurrentValue = LayerValue.Value
+            };
 
             if (inputValueDialog.ShowDialog() == false ||
                 !byte.TryParse(inputValueDialog.ResponseText, out var value) ||
